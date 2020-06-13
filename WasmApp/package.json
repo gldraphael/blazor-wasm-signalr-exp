@@ -1,5 +1,8 @@
 {
   "private": true,
+  "scripts": {
+    "build-css": "gulp css"
+  },
   "dependencies": {
     "tailwindcss": "^1.4.5"
   },

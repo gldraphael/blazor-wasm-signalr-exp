@@ -50,7 +50,7 @@ COPY ./WasmApp/package.json ./package.json
 COPY ./WasmApp/package-lock.json ./package-lock.json
 RUN npm install
 COPY ./WasmApp .
-RUN gulp css
+RUN npm run build-css
 
 
 # ############################################
