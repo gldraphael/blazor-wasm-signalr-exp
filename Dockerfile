@@ -40,6 +40,18 @@ WORKDIR /webapp
 COPY ./WebApp ./
 RUN dotnet publish -r linux-musl-x64 --self-contained true -c Release -o out
 
+# ############################################
+# Build CSS
+# ############################################
+FROM node:lts-alpine3.12 AS css-build-env
+
+WORKDIR /src
+COPY ./WasmApp/package.json ./package.json
+COPY ./WasmApp/package-lock.json ./package-lock.json
+RUN npm install
+COPY ./WasmApp .
+RUN gulp css
+
 
 # ############################################
 # Copy publish files over
@@ -54,6 +66,7 @@ RUN chmod +x /app/run.sh
 
 WORKDIR /www/wasmapp
 COPY --from=wasm-build-env /wasmapp/out/wwwroot .
+COPY --from=css-build-env /src/wwwroot/dist ./dist
 
 WORKDIR /www/webapp
 COPY --from=api-build-env /webapp/out .
