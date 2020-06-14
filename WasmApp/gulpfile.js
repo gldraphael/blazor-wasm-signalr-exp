@@ -1,4 +1,4 @@
-const { src, dest, watch } = require('gulp')
+const { src, dest, watch: gulpWatch } = require('gulp')
 const cssFile = "assets/css/app.css"
 const tailwindConfig = "tailwind.config.js"
 
@@ -9,8 +9,10 @@ function css () {
     .pipe(postcss())
     .pipe(dest('wwwroot/dist/css'))
 }
-exports.css = css;
+exports.css = css
 
-exports.default = function() {
-  return watch([cssFile, tailwindConfig], css)
+function watch() {
+  return gulpWatch([cssFile, tailwindConfig], css)
 }
+exports.watch = watch
+exports.default = watch
