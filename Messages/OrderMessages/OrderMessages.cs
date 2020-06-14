@@ -1,11 +1,11 @@
-namespace Shared.Messages.OrderMessages
+namespace Messages.OrderMessages
 {
     public class PlaceOrder
     {
 
     }
 
-    public enum OrderStatus
+    public enum OrderState
     {
         New,
         InReview,
@@ -16,7 +16,7 @@ namespace Shared.Messages.OrderMessages
     public class OrderPlaced
     {
         public string OrderId { get; }
-        public OrderStatus Status { get; } = OrderStatus.New;
+        public OrderState State { get; } = OrderState.New;
 
         public OrderPlaced(string orderId)
         {
@@ -27,12 +27,12 @@ namespace Shared.Messages.OrderMessages
     public class OrderStatusChanged
     {
         public string OrderId { get; }
-        public OrderStatus Status { get; }
+        public OrderState State { get; }
 
-        public OrderStatusChanged(string orderId, OrderStatus status)
+        public OrderStatusChanged(string orderId, OrderState state)
         {
             OrderId = orderId;
-            Status = status;
+            State = state;
         }
     }
 }

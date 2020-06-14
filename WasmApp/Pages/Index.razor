@@ -1,11 +1,58 @@
 @page "/"
+@inject ILogger<Index> logger
 
-<img />
-<button @onclick="PlaceOrder" class="bg-white border-2 border-yellow-500 hover:border-yellow-500 text-gray-800 py-2 font-bold px-4 rounded">Place Order</button>
+    <section class="flex-1 justify-center text-center">
+        @switch (State)
+        {
+            case null:
+                <img src="images/book.png" class="max-h-500px text-center" />
+                <button bind="@IsOrderButtonDisabled" @onclick="PlaceOrder"
+                        class="bg-white border-2 border-yellow-500 hover:border-yellow-500 text-gray-800 py-2 font-bold px-4 rounded">
+                    Place Order
+                </button>
+                break;
+
+            case OrderState.New:
+                <img src="images/confirmed.png" class="max-h-500px" />
+                break;
+
+            case OrderState.InReview:
+                <img src="images/processing.png" class="max-h-500px" />
+                break;
+
+            case OrderState.Processing:
+                <img src="images/processing.png" class="max-h-500px" />
+                break;
+
+
+            case OrderState.Fulfilled:
+                <img src="images/fulfilled.png" class="max-h-500px" />
+                break;
+        }
+    </section>
 
 @code {
-    void PlaceOrder()
-    {
 
+    OrderState? State { get; set; }
+    bool IsOrderButtonDisabled { get; set; } = false;
+
+    async void PlaceOrder()
+    {
+        IsOrderButtonDisabled = true;
+
+        await WaitAndChangeStateTo(OrderState.New);
+        await WaitAndChangeStateTo(OrderState.InReview);
+        await WaitAndChangeStateTo(OrderState.Processing);
+        await WaitAndChangeStateTo(OrderState.Fulfilled);
+    }
+
+    async Task WaitAndChangeStateTo(OrderState state)
+    {
+        const int DELAY_TIME_MS = 2_000;
+
+        await Task.Delay(DELAY_TIME_MS);
+        logger.LogInformation($"Updating state to {state}");
+        State = state;
+        StateHasChanged();
     }
 }
