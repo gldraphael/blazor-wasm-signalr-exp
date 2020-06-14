@@ -1,5 +1,6 @@
 @page "/"
 @inject ILogger<Index> logger
+@inject HttpClient http
 
     <section class="flex-1 justify-center text-center">
         @switch (State)
@@ -35,6 +36,12 @@
 
     OrderState? State { get; set; }
     bool IsOrderButtonDisabled { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await http.GetStringAsync("/api/ping");
+        logger.LogInformation($"{response}");
+    }
 
     async void PlaceOrder()
     {

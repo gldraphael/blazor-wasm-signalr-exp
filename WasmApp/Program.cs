@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace WasmApp
 {
-    public class Program
+    public static class Program
     {
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            var baseUrl = builder.HostEnvironment.IsDevelopment() ? "http://localhost:5000" : builder.HostEnvironment.BaseAddress; // TODO: Don't hardcode this
+            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(baseUrl) });
             builder.Services.AddLogging();
 
             await builder.Build().RunAsync();

@@ -28,6 +28,12 @@ namespace WebApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors((c) =>
+                {
+                    c.AllowAnyOrigin();
+                    c.AllowAnyMethod();
+                    c.AllowAnyHeader();
+                });
             }
             else
             {
