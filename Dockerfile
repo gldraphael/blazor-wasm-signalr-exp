@@ -28,6 +28,7 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.300 AS wasm-build-env
 
 WORKDIR /wasmapp
+COPY ./Shared ..
 COPY ./WasmApp ./
 RUN dotnet publish -c Release -o out
 
@@ -37,6 +38,7 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/nightly/sdk:5.0.100-preview.5-alpine3.11 AS api-build-env
 
 WORKDIR /webapp
+COPY ./Shared ..
 COPY ./WebApp ./
 RUN dotnet publish -r linux-musl-x64 --self-contained true -c Release -o out
 
