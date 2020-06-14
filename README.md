@@ -1,5 +1,7 @@
 # Blazor + WebAssembly + SignalR Experiment
 
+![ci](https://github.com/gldraphael/blazor-wasm-signalr-exp/workflows/ci/badge.svg)
+
 ## Quickstart
 
 ### Running a per-built docker image locally
